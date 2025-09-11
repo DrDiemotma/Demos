@@ -189,3 +189,4 @@ Notebooks/Training/logs/
 Notebooks/.virtual_documents/
 .ipynb_checkpoints/
 *.tfrecords
+*.keras
