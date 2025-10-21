@@ -1,0 +1,3 @@
+[submodule "Notebooks/PredictiveMaintenance"]
+	path = Notebooks/PredictiveMaintenance
+	url = git@github.com:DrDiemotma/PredictiveMaintenance.git
