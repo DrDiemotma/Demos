@@ -190,3 +190,5 @@ Notebooks/.virtual_documents/
 .ipynb_checkpoints/
 *.tfrecords
 *.keras
+**/mlruns/
+Notebooks/StockRunIds.json

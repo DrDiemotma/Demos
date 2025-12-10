@@ -5,14 +5,25 @@ import streamlit as st
 
 
 HOST: str = "http://localhost"
-PORT: int = 39891
+PORT: int = 37709
 
-def chat_message(prompt_text: str, chat_history: list[dict[str, str]] | None = None, max_output_tokens: int = 150, temperature: float = 0.2, timeout: float = 60.0):
+SYSTEM_CONTENT_REQUIREMENTS: str = "You are a requirement engineering assistant to make sure everything is using IREB standards. " \
+                                   "You answer in full sentences and every sentence has one 'shall' or 'must'. " \
+                                   "Make sure that the response contains all requirements mentioned in all prompts." \
+                                   "Don't add new restraints to the requirements which are not mentioned in the prompts." \
+                                   "If something is unclear, request clarification instead of giving an answer."
+
+SYSTEM_CONTENT_TESTS: str = "You are a system to evaluate tests for requirements. " \
+                            "Each test must be falsifiable, clear, short. " \
+                            "Your answer must include acceptance criteria for the test. " \
+                            "Enumerate the tests and write comments if necessary. " \
+                            "For time constraints, weights, or distances, always give thresholds."
+
+def chat_message(prompt_text: str, chat_history: list[dict[str, str]] | None = None, max_output_tokens: int = 400, temperature: float = 0.2, timeout: float = 60.0):
     if chat_history is None:
         chat_history = [{
             "role": "system",
-            "content": "You are a requirement engineering assistant to make sure everything is using IREB standards. "
-            "You answer in full sentences and every sentence has one 'shall' or 'must'."
+            "content": SYSTEM_CONTENT_REQUIREMENTS
         }]
     chat_history.append({
         "role": "user",
@@ -41,9 +52,8 @@ def chat_message(prompt_text: str, chat_history: list[dict[str, str]] | None = N
 if "requirement_history" not in st.session_state:
     requirement_history = [{
         "role": "system",
-        "content": "You are reviewing requirements. " 
-                   "Make sure every answer is a full sentence and contains one shall or must. "
-                   "Answer in as few sentences as possible."
+        "content": SYSTEM_CONTENT_REQUIREMENTS
+
     }]
     st.session_state["requirement_history"] = requirement_history
 else:
@@ -51,9 +61,7 @@ else:
 if "test_history" not in st.session_state:
     test_history = [{
         "role": "system",
-        "content": "You are a system to evaluate tests for requirements. "
-                   "Each test must be falsifiable, clear, short. "
-                   "Your answer must include acceptance criteria for the test. "
+        "content": SYSTEM_CONTENT_TESTS
     }]
     st.session_state["test_history"] = test_history
 else:
